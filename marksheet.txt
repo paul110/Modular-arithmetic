@@ -1,0 +1,93 @@
+-------------------------------------------------------------------------------
+
+1. Instructions
+
+- replace any [...] with free text,
+  and
+- replace the [?] with an X if you have completed that stage,
+- replace the [?] with an * if you have attempted that stage, but you know
+  it doesn't work completely; document why you think it doesn't work, plus
+  what you would do to fix the problem, at the end of the marksheet.
+
+-------------------------------------------------------------------------------
+
+2. Information
+
+So that we can calibrate and improve the assignment in the future, give us
+a rough idea how long (in hours) you spent on it *in total*:
+
+effort : [40] hours
+
+-------------------------------------------------------------------------------
+
+3. Citation
+
+Clearly it might have an influence on your mark, but the use of third-party
+resources *is* allowed *if* correctly cited (unless explicitly prohibited 
+by the assignment description of course).  Let us know what third-party 
+source code or resources you used (if any) so it's clear what's your work 
+and what isn't:
+
+[ 	
+	The main third party resource was the GMP library. 
+	The other resource was the random number read from dev/random . 
+]
+
+-------------------------------------------------------------------------------
+
+4. Marking
+
+The following gives a stage-by-stage description of the assignment marking
+scheme.  Note this acts as an indicative guideline only, including weights
+for each more obvious element (e.g., the functional correctness of a stage).
+For example, other elements outside this list *often* warrant an increase
+or decrease in marks; examples include hard to quantify features such as
+the style or efficiency of a solution.
+
+[x] Stage 1 : implemented RSA     encryption                         ( 10%)
+
+[x] Stage 2 : implemented RSA     decryption                         ( 10%)
+
+[x] Stage 3 : implemented ElGamal encryption                         ( 10%)
+
+[x] Stage 4 : implemented ElGamal decryption                         ( 10%)
+
+    Extra   : implemented (and integrated) major optimisations
+[x]           - has a reasoned approach to pseudo-random generation  ( 10%)
+[x]           - uses Chinese Remainder Theorem (CRT)                 ( 10%)
+[x]           - uses Non-binary (i.e., "windowed") exponentiation    ( 15%)
+[x]           - uses Montgomery multiplication wherever appropriate  ( 25%)
+
+                                                                     ------
+                                                                     (100%)
+
+-------------------------------------------------------------------------------
+
+5. Documentation
+
+Any other documentation, notes or comments that you think are important or
+might be easy to overlook (e.g., a subtle issue or technique in associated
+source code) should go here:
+
+[ 	Succesfully implemented all the above tasks. 
+	
+	The code is structured so that no mpz_mul() or mpz_add() is called. 
+	I have broken down these functions and made my own versions of them which should have lower overhead than the ones in the library as I am working only on limbs.
+
+	I have replaced al mpz_powm() function calls with my own implementatin of Montgomery exponentiation which uses a sliding window approach. The point is that even if there is some overhead in going into montgomery form and out of it and making some precomputations, that overhead is canceled by the speed with which we are then able to make the multiplications in montgomery form. 
+
+	Replacing all multiplications with a montgomery multiplication is not necessary best in all cases as the resulted increase in speed for just one multiplication might not be enough to cancel the overhead mentioned above. 
+
+	As the omega parameter for the montgomery form is only ever needed for its first limb, I reduced the operations needed to compute it to operations only on 1 imb, which saves a great deal of having to deal with carry outs and limb pointers.
+
+	Many functions have also been implemented to enable the call using the result parameter as a computation parameter as well ( for example: montMul(result, result, result, n, w) will compute result = (result * result * ro^-1) % n)
+
+	I made a different function : mont_red(...) to use instead of using montMul(result, x, 1, ... ) to compute x * ro^-1 
+
+	THe key for the 3rd stage has been generated using a seed of 160bits  sampled from dev/urandom. This seed is then put in the gmp_randseed() function which together with mpz_urandomb() generates the random key I was after. I have chosen this option as the ubuntu system is opensource so there is low potential for getting a weird key which could have specific biases. I also didn't opt for using the time as a random seed as it didn't seem very secure considering that one could easily get the information about it given a low clock or a very high rate of seeding.
+
+
+
+]
+
+-------------------------------------------------------------------------------
